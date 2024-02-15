@@ -1,3 +1,31 @@
+.app {
+  background-color: #FFF;
+}
+
+.header {
+  background-color: red;
+  background-image: url('/park-planner-header-bg.png');
+  background-size: cover;
+  background-position: bottom center;
+  padding: 100px 50px;
+  min-height: 400px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.titleBlock {
+  color: #fff;
+  text-shadow: -1px 1px 26px rgba(0,0,0,0.6);
+}
+
+.titleBlock h1 {
+  font-size: 48px;
+}
+
+.titleBlock h2 {
+  font-weight: 300;
+}
+
 .main {
   display: flex;
   flex-direction: column;
@@ -29,7 +57,7 @@
   position: relative;
   margin: 0;
   padding: 1rem;
-  background-color: rgba(var(--callout-rgb), 0.5);
+  /* background-color: rgba(var(--callout-rgb), 0.5); */
   border: 1px solid rgba(var(--callout-border-rgb), 0.3);
   border-radius: var(--border-radius);
 }

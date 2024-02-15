@@ -1,95 +1,69 @@
+'use client'
+
+import React, {useState} from 'react';
+import { Button, TextField, RadioGroup, FormControlLabel, Radio, Grid, Typography, Autocomplete } from '@mui/material';
+import {BASE_URL, STATES} from './constants.js'
 import Image from "next/image";
+import { Box } from '@mui/system';
 import styles from "./page.module.css";
 
 export default function Home() {
+  const [stateValue, setStateValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleStateSelect = (e, state) => {
+    setStateValue(state.id)
+  }
+
+  const handleStateSearch = () => {
+    fetchParkData('stateCode', stateValue)
+  }
+
+  const handleQueryChange = (e) => {
+    setSearchValue(e.target.value)
+  }
+
+  const handleQuerySearch = () => {
+    fetchParkData('q', searchValue)
+  }
+
+  const fetchParkData = async (type, query) => {
+    try {
+      const response = await fetch(`${BASE_URL}/parks?api_key=${process.env.NEXT_PUBLIC_NATIONAL_PARK_SERVICE_API_KEY}&${type}=${query}`);
+      const jsonData = await response.json();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  const stateOptions = Object.keys(STATES).map(key => ({label: `${STATES[key]}`, id: key}));
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className={styles.app}>
+      <div className={styles.header}>
+        <div className={styles.titleBlock}>
+          <h1>Park Planner</h1>
+          <h2>A guide to help you plan your next national park visit.</h2>
         </div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <Grid container direction="row">
+        <Grid item xs={6} sx={{display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '50px'}}>
+          <Typography>Search parks by state:</Typography>
+          <Autocomplete
+            fullWidth
+            options={stateOptions}
+            renderInput={(params) => <TextField {...params} label="State" />}
+            value={stateValue} 
+            onChange={handleStateSelect}
+          />
+          <Button variant="contained" onClick={handleStateSearch} >Search</Button>
+        </Grid>
+        <Grid item xs={6}  sx={{display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '50px'}}>
+          <Typography>Search For parks</Typography>
+          <TextField fullWidth value={searchValue} onChange={handleQueryChange} />
+          <Button variant="contained" onClick={handleQuerySearch} >Search</Button>
+        </Grid>
+      </Grid>
+    </div>
   );
 }
