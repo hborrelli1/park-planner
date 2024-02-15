@@ -1,3 +1,4 @@
+# Park Planner
 Park Planner is a guide to help users plan trips to national parks. This app will allow users to search for national parks, campsites, etc. Users will be able to create trip itineraries where they can select National Parks they plan to visit, select activities, and campsites.  
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).  
